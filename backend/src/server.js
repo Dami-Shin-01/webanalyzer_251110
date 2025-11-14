@@ -100,9 +100,11 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, () => {
   console.log(`🚀 Project Snapshot Backend running on port ${PORT}`);
   console.log(`🌍 Environment: ${NODE_ENV}`);
+  console.log(`📍 Host: ${HOST}`);
   console.log(`📍 Health check: http://localhost:${PORT}/health`);
   console.log(`📍 API endpoint: http://localhost:${PORT}/api/analyze`);
   
