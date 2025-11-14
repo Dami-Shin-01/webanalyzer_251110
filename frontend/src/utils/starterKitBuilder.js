@@ -392,13 +392,163 @@ function parseEffectKey(key) {
  * @returns {string} Generated name
  */
 function generateAutoName(category, value) {
-  // Create a simple hash from the value
-  const hash = value.split('').reduce((acc, char) => {
-    return ((acc << 5) - acc) + char.charCodeAt(0);
-  }, 0);
+  switch (category) {
+    case 'color':
+      return generateColorName(value);
+    case 'font':
+      return generateFontName(value);
+    case 'spacing':
+      return generateSpacingName(value);
+    case 'shadow':
+    case 'border-radius':
+    case 'opacity':
+      return generateEffectName(category, value);
+    default:
+      // Fallback to hash-based name
+      const hash = value.split('').reduce((acc, char) => {
+        return ((acc << 5) - acc) + char.charCodeAt(0);
+      }, 0);
+      const shortHash = Math.abs(hash).toString(36).substring(0, 6);
+      return `${category}-${shortHash}`;
+  }
+}
+
+/**
+ * Generate meaningful color name
+ * @param {string} color - Color value (hex, rgb, etc.)
+ * @returns {string} Generated color name
+ */
+function generateColorName(color) {
+  // Convert to hex if possible
+  const hexMatch = color.match(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/);
+  if (hexMatch) {
+    const hex = hexMatch[1].length === 3 
+      ? hexMatch[1].split('').map(c => c + c).join('')
+      : hexMatch[1];
+    
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    
+    // Determine color name based on RGB values
+    const colorName = getColorNameFromRGB(r, g, b);
+    const lightness = getLightnessLevel(r, g, b);
+    
+    return `${colorName}-${lightness}`;
+  }
   
-  const shortHash = Math.abs(hash).toString(36).substring(0, 6);
-  return `${category}-${shortHash}`;
+  // Fallback for other formats
+  const hash = Math.abs(color.split('').reduce((acc, char) => 
+    ((acc << 5) - acc) + char.charCodeAt(0), 0)).toString(36).substring(0, 4);
+  return `color-${hash}`;
+}
+
+/**
+ * Get color name from RGB values
+ */
+function getColorNameFromRGB(r, g, b) {
+  // Grayscale
+  if (Math.abs(r - g) < 10 && Math.abs(g - b) < 10 && Math.abs(r - b) < 10) {
+    return 'gray';
+  }
+  
+  // Determine dominant color
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  
+  if (max - min < 30) return 'gray';
+  
+  if (r === max && g === min) return 'red';
+  if (r === max && b === min) return 'orange';
+  if (g === max && b === min) return 'green';
+  if (g === max && r === min) return 'cyan';
+  if (b === max && r === min) return 'blue';
+  if (b === max && g === min) return 'purple';
+  
+  // More nuanced detection
+  if (r > g && r > b) {
+    if (g > b) return 'orange';
+    return 'red';
+  }
+  if (g > r && g > b) {
+    if (r > b) return 'yellow';
+    return 'green';
+  }
+  if (b > r && b > g) {
+    if (r > g) return 'purple';
+    return 'blue';
+  }
+  
+  return 'gray';
+}
+
+/**
+ * Get lightness level (100-900 scale)
+ */
+function getLightnessLevel(r, g, b) {
+  const lightness = (r + g + b) / 3;
+  
+  if (lightness > 230) return '100';
+  if (lightness > 200) return '200';
+  if (lightness > 170) return '300';
+  if (lightness > 140) return '400';
+  if (lightness > 110) return '500';
+  if (lightness > 80) return '600';
+  if (lightness > 50) return '700';
+  if (lightness > 25) return '800';
+  return '900';
+}
+
+/**
+ * Generate meaningful font name
+ */
+function generateFontName(fontKey) {
+  const font = parseFontKey(fontKey);
+  const size = parseFloat(font.size);
+  
+  // Size-based naming
+  let sizeName = 'md';
+  if (size <= 12) sizeName = 'xs';
+  else if (size <= 14) sizeName = 'sm';
+  else if (size <= 16) sizeName = 'base';
+  else if (size <= 18) sizeName = 'lg';
+  else if (size <= 24) sizeName = 'xl';
+  else if (size <= 32) sizeName = '2xl';
+  else if (size <= 48) sizeName = '3xl';
+  else sizeName = '4xl';
+  
+  return `text-${sizeName}`;
+}
+
+/**
+ * Generate meaningful spacing name
+ */
+function generateSpacingName(spacing) {
+  const value = parseFloat(spacing);
+  
+  // Convert to rem-like scale (assuming 16px base)
+  const scale = Math.round(value / 4);
+  
+  if (scale === 0) return 'spacing-0';
+  if (scale <= 1) return 'spacing-1';
+  if (scale <= 2) return 'spacing-2';
+  if (scale <= 3) return 'spacing-3';
+  if (scale <= 4) return 'spacing-4';
+  if (scale <= 6) return 'spacing-6';
+  if (scale <= 8) return 'spacing-8';
+  if (scale <= 12) return 'spacing-12';
+  if (scale <= 16) return 'spacing-16';
+  return `spacing-${scale}`;
+}
+
+/**
+ * Generate meaningful effect name
+ */
+function generateEffectName(type, value) {
+  const cleanType = type.replace('-', '');
+  const hash = Math.abs(value.split('').reduce((acc, char) => 
+    ((acc << 5) - acc) + char.charCodeAt(0), 0)).toString(36).substring(0, 3);
+  return `${cleanType}-${hash}`;
 }
 
 /**
