@@ -89,6 +89,7 @@ function DesignStudio({ tokens, metadata, motionReports = [], onClose }) {
       
       await generateAndDownloadZip(
         tokenMappings,
+        tokens, // Pass all tokens
         tokens.animations || [],
         motionReports,
         exportMetadata,

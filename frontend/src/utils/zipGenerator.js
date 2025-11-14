@@ -4,28 +4,75 @@ import { buildCSS, buildSCSS, buildJSON, buildAnimationCSS, buildMotionReports, 
 /**
  * Generate and download a ZIP file containing the design system starter kit
  * @param {Object} tokenMappings - Token mappings by category
+ * @param {Object} allTokens - All extracted tokens
  * @param {Array} animations - Animation tokens (optional)
  * @param {Array} motionReports - Motion reports from dynamic analysis (optional)
  * @param {Object} metadata - Analysis metadata
  * @param {boolean} includeUnnamed - Whether to include unnamed tokens
  * @returns {Promise<void>}
  */
-export async function generateAndDownloadZip(tokenMappings, animations = [], motionReports = [], metadata = {}, includeUnnamed = false) {
+export async function generateAndDownloadZip(tokenMappings, allTokens = {}, animations = [], motionReports = [], metadata = {}, includeUnnamed = false) {
+  // If includeUnnamed is true, merge all tokens into tokenMappings with empty names
+  const completeTokenMappings = { ...tokenMappings };
+  
+  if (includeUnnamed) {
+    // Add all colors
+    if (allTokens.colors) {
+      completeTokenMappings.colors = completeTokenMappings.colors || {};
+      allTokens.colors.forEach(color => {
+        if (!(color in completeTokenMappings.colors)) {
+          completeTokenMappings.colors[color] = ''; // Empty name will trigger auto-generation
+        }
+      });
+    }
+    
+    // Add all fonts
+    if (allTokens.fonts) {
+      completeTokenMappings.fonts = completeTokenMappings.fonts || {};
+      allTokens.fonts.forEach(font => {
+        const key = `${font.family}-${font.size}-${font.weight}-${font.lineHeight}`;
+        if (!(key in completeTokenMappings.fonts)) {
+          completeTokenMappings.fonts[key] = '';
+        }
+      });
+    }
+    
+    // Add all spacing
+    if (allTokens.spacing) {
+      completeTokenMappings.spacing = completeTokenMappings.spacing || {};
+      allTokens.spacing.forEach(spacing => {
+        if (!(spacing in completeTokenMappings.spacing)) {
+          completeTokenMappings.spacing[spacing] = '';
+        }
+      });
+    }
+    
+    // Add all effects
+    if (allTokens.effects) {
+      completeTokenMappings.effects = completeTokenMappings.effects || {};
+      allTokens.effects.forEach(effect => {
+        const key = `${effect.type}-${effect.value}`;
+        if (!(key in completeTokenMappings.effects)) {
+          completeTokenMappings.effects[key] = '';
+        }
+      });
+    }
+  }
   const zip = new JSZip();
 
   // Create design_system folder
   const designSystemFolder = zip.folder('design_system');
 
   // Generate and add CSS file
-  const cssContent = buildCSS(tokenMappings, includeUnnamed);
+  const cssContent = buildCSS(completeTokenMappings, includeUnnamed);
   designSystemFolder.file('tokens.css', cssContent);
 
   // Generate and add SCSS file
-  const scssContent = buildSCSS(tokenMappings, includeUnnamed);
+  const scssContent = buildSCSS(completeTokenMappings, includeUnnamed);
   designSystemFolder.file('tokens.scss', scssContent);
 
   // Generate and add JSON file
-  const jsonContent = buildJSON(tokenMappings, includeUnnamed);
+  const jsonContent = buildJSON(completeTokenMappings, includeUnnamed);
   designSystemFolder.file('tokens.json', jsonContent);
 
   // Add animations if present
@@ -57,7 +104,7 @@ export async function generateAndDownloadZip(tokenMappings, animations = [], mot
   }
 
   // Generate and add README
-  const readmeContent = buildReadme(metadata, tokenMappings);
+  const readmeContent = buildReadme(metadata, completeTokenMappings);
   zip.file('README.md', readmeContent);
 
   // Generate ZIP file
