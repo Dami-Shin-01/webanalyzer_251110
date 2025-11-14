@@ -27,14 +27,23 @@ class StaticAnalyzer {
       // Step 1: Download HTML
       const html = await this.fetchHTML(url);
       
-      // Step 2: Extract CSS links from HTML
+      // Step 2: Extract inline CSS from <style> tags
+      const inlineCSS = this.extractInlineCSS(html);
+      
+      // Step 3: Extract CSS links from HTML
       const cssUrls = this.extractCSSLinks(html, url);
       
-      // Step 3: Download and merge CSS files
+      // Step 4: Download and merge CSS files
       const mergedCSS = await this.fetchCSS(cssUrls, url);
       
-      // Step 4: Parse tokens (placeholder for now - will be implemented in next tasks)
-      const tokens = this.parseTokens(mergedCSS);
+      // Step 5: Combine inline and external CSS
+      const allCSS = {
+        ...mergedCSS,
+        content: inlineCSS + '\n\n' + mergedCSS.content
+      };
+      
+      // Step 6: Parse tokens
+      const tokens = this.parseTokens(allCSS);
       
       const duration = Date.now() - startTime;
       
@@ -97,6 +106,28 @@ class StaticAnalyzer {
       }
       throw error;
     }
+  }
+
+  /**
+   * Extract inline CSS from <style> tags
+   * @param {string} html - HTML content
+   * @returns {string} Combined inline CSS content
+   */
+  extractInlineCSS(html) {
+    const $ = cheerio.load(html);
+    let inlineCSS = '';
+    
+    $('style').each((i, elem) => {
+      const styleContent = $(elem).html();
+      if (styleContent) {
+        inlineCSS += `\n/* Inline <style> tag ${i + 1} */\n`;
+        inlineCSS += styleContent;
+        inlineCSS += '\n\n';
+      }
+    });
+    
+    console.log(`Extracted inline CSS from ${$('style').length} <style> tags`);
+    return inlineCSS;
   }
 
   /**
