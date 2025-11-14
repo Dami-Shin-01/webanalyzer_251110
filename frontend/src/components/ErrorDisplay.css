@@ -1,0 +1,255 @@
+.error-display {
+  margin: 2rem 0;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-display__container {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+  border: 2px solid #ff6b6b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(255, 107, 107, 0.1);
+}
+
+.error-display__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.error-display__icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.error-display__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #c92a2a;
+}
+
+.error-display__content {
+  margin-bottom: 1.5rem;
+}
+
+.error-display__message {
+  font-size: 1rem;
+  color: #495057;
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+}
+
+.error-display__details {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 6px;
+  border: 1px solid #ffc9c9;
+}
+
+.error-display__details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #c92a2a;
+  user-select: none;
+}
+
+.error-display__details summary:hover {
+  color: #a61e1e;
+}
+
+.error-display__details-content {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #495057;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.error-display__suggestions {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  border-left: 4px solid #ff8787;
+}
+
+.error-display__suggestions-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c92a2a;
+}
+
+.error-display__suggestions-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.error-display__suggestions-list li {
+  margin-bottom: 0.5rem;
+  color: #495057;
+  line-height: 1.5;
+}
+
+.error-display__suggestions-list li:last-child {
+  margin-bottom: 0;
+}
+
+.error-display__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.error-display__button {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-display__button--primary {
+  background: #ff6b6b;
+  color: white;
+}
+
+.error-display__button--primary:hover {
+  background: #fa5252;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+.error-display__button--primary:active {
+  transform: translateY(0);
+}
+
+.error-display__button--secondary {
+  background: white;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+.error-display__button--secondary:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .error-display {
+    margin: 1rem 0;
+  }
+
+  .error-display__container {
+    padding: 1rem;
+  }
+
+  .error-display__title {
+    font-size: 1.1rem;
+  }
+
+  .error-display__message {
+    font-size: 0.95rem;
+  }
+
+  .error-display__actions {
+    flex-direction: column;
+  }
+
+  .error-display__button {
+    width: 100%;
+  }
+}
+
+/* Accessibility Improvements */
+.error-display__button:focus-visible {
+  outline: 3px solid #ff6b6b;
+  outline-offset: 2px;
+}
+
+.error-display__details summary:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .error-display__container {
+    border-width: 3px;
+  }
+
+  .error-display__button--primary {
+    border: 2px solid white;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .error-display {
+    animation: none;
+  }
+
+  .error-display__button:hover {
+    transform: none;
+  }
+
+  .error-display__button--primary:active {
+    transform: none;
+  }
+}
+
+/* Mobile Improvements */
+@media (max-width: 480px) {
+  .error-display__container {
+    padding: 0.875rem;
+    border-radius: 10px;
+  }
+
+  .error-display__header {
+    gap: 0.5rem;
+  }
+
+  .error-display__icon {
+    font-size: 1.75rem;
+  }
+
+  .error-display__title {
+    font-size: 1rem;
+  }
+
+  .error-display__message {
+    font-size: 0.9rem;
+  }
+
+  .error-display__suggestions {
+    padding: 0.875rem;
+  }
+
+  .error-display__suggestions-list {
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
+  }
+}

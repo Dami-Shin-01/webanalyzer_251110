@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animation Test Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      min-height: 200vh;
+    }
+    
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .slide-in {
+      transform: translateX(-100px);
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+    
+    .slide-in.visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .box {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 50px 0;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .scroll-trigger {
+      margin-top: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="fade-in">Animation Test Page</h1>
+  
+  <div class="box fade-in" style="animation-delay: 0.2s;">
+    Load Animation
+  </div>
+  
+  <div class="box slide-in scroll-trigger" id="scroll-box-1">
+    Scroll Animation 1
+  </div>
+  
+  <div class="box slide-in" id="scroll-box-2">
+    Scroll Animation 2
+  </div>
+  
+  <script>
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    
+    document.querySelectorAll('.slide-in').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

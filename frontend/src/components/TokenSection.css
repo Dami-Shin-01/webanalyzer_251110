@@ -1,0 +1,324 @@
+/* Visually Hidden for Screen Readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.token-section {
+  margin-bottom: 2.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.token-section:focus-within {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+}
+
+.token-section-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: clamp(0.875rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.token-section-header h3 {
+  margin: 0;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 600;
+  color: #212529;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-icon {
+  font-size: clamp(1.2rem, 2.5vw, 1.3rem);
+  flex-shrink: 0;
+}
+
+.token-count {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.3rem 0.875rem;
+  border-radius: 16px;
+  font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+  flex-shrink: 0;
+}
+
+.token-list {
+  padding: clamp(0.875rem, 2vw, 1rem);
+}
+
+.token-item {
+  padding: clamp(0.875rem, 2vw, 1rem);
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.token-item:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
+}
+
+.token-item:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.token-item:last-child {
+  margin-bottom: 0;
+}
+
+.token-main {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 2fr;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  align-items: center;
+}
+
+.token-display {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.token-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.token-name-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  transition: all 0.3s ease;
+  font-family: 'Courier New', monospace;
+  background-color: #ffffff;
+}
+
+.token-name-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background-color: #fafbff;
+}
+
+.token-name-input:hover:not(:focus) {
+  border-color: #cbd5e0;
+}
+
+.token-name-input::placeholder {
+  color: #adb5bd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.token-preview-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  flex-wrap: wrap;
+}
+
+.preview-label {
+  font-size: clamp(0.75rem, 1.8vw, 0.8rem);
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-name {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(0.85rem, 2vw, 0.9rem);
+  color: #667eea;
+  font-weight: 600;
+  background: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #667eea;
+  word-break: break-all;
+}
+
+.token-live-preview {
+  margin-top: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeIn 0.3s ease-out;
+  border: 2px solid #a5d6a7;
+  flex-wrap: wrap;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.preview-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.token-live-preview span {
+  font-size: clamp(0.85rem, 2vw, 0.9rem);
+  color: #2e7d32;
+  line-height: 1.5;
+}
+
+.token-live-preview strong {
+  font-family: 'Courier New', monospace;
+  color: #1b5e20;
+  word-break: break-all;
+}
+
+/* Responsive Design - Tablet */
+@media (max-width: 1024px) {
+  .token-main {
+    grid-template-columns: minmax(100px, 1fr) 1.5fr;
+    gap: 1rem;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+  .token-section {
+    margin-bottom: 2rem;
+    border-radius: 10px;
+  }
+
+  .token-section-header {
+    padding: 0.875rem 1rem;
+  }
+
+  .token-list {
+    padding: 0.875rem;
+  }
+
+  .token-item {
+    padding: 0.875rem;
+  }
+
+  .token-main {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .token-display {
+    justify-content: flex-start;
+  }
+
+  .token-preview-badge {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .token-item:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .token-section {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .token-section-header {
+    padding: 0.75rem 0.875rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .token-list {
+    padding: 0.75rem;
+  }
+
+  .token-item {
+    padding: 0.75rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .token-name-input {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .token-preview-badge {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .token-live-preview {
+    padding: 0.75rem 0.875rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .token-section {
+    border-width: 3px;
+  }
+
+  .token-item {
+    border-width: 3px;
+  }
+
+  .token-name-input {
+    border-width: 3px;
+  }
+
+  .token-name-input:focus {
+    border-width: 3px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .token-section,
+  .token-item,
+  .token-name-input,
+  .token-live-preview {
+    transition: none;
+    animation: none;
+  }
+
+  .token-item:hover {
+    transform: none;
+  }
+}
