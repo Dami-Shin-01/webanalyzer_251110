@@ -3,7 +3,7 @@
 ## 🌐 배포된 URL
 
 ### Frontend (Vercel)
-- **URL**: https://frontend-cx51o7dsb-daynashins-projects.vercel.app
+- **URL**: https://webanalyzer-251110.vercel.app (커스텀 도메인)
 - **Dashboard**: https://vercel.com/daynashins-projects/frontend
 - **Status**: ✅ 배포 완료 (환경 변수 적용)
 
@@ -26,7 +26,7 @@ REACT_APP_API_URL=https://webanalyzer-backend.onrender.com
 NODE_ENV=production
 PORT=10000
 TIMEOUT=30000
-FRONTEND_URL=https://frontend-cx51o7dsb-daynashins-projects.vercel.app
+FRONTEND_URL=https://webanalyzer-251110.vercel.app
 ```
 
 **중요**: Backend의 `FRONTEND_URL`을 반드시 업데이트해주세요!
@@ -65,13 +65,13 @@ vercel --prod
 
 ## 📝 다음 단계
 
-1. **Backend 환경 변수 업데이트**
+1. **Backend 환경 변수 업데이트** ⚠️ 중요!
    - Render Dashboard → webanalyzer-backend → Environment
-   - `FRONTEND_URL` = `https://frontend-cx51o7dsb-daynashins-projects.vercel.app`
-   - Save Changes
+   - `FRONTEND_URL` = `https://webanalyzer-251110.vercel.app`
+   - Save Changes (자동 재배포됨)
 
 2. **Frontend 테스트**
-   - https://frontend-cx51o7dsb-daynashins-projects.vercel.app 접속
+   - https://webanalyzer-251110.vercel.app 접속
    - URL 입력 및 분석 기능 테스트
 
 3. **커스텀 도메인 설정 (선택사항)**
