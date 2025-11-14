@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
+// Debug logging
+console.log('🔧 API Service initialized with URL:', API_URL);
+
 /**
  * Parse error response from backend
  * @param {Object} errorData - Error data from backend
@@ -32,6 +35,9 @@ const parseErrorResponse = (errorData) => {
  */
 export const analyzeWebsite = async (url, options = {}) => {
   try {
+    console.log('📡 Sending request to:', `${API_URL}/api/analyze`);
+    console.log('📦 Request payload:', { url, options });
+    
     const response = await axios.post(
       `${API_URL}/api/analyze`,
       {
@@ -48,16 +54,28 @@ export const analyzeWebsite = async (url, options = {}) => {
         }
       }
     );
+    
+    console.log('✅ Response received:', response.status);
 
     return response.data;
   } catch (error) {
+    console.error('❌ Request failed:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      response: error.response?.status,
+      request: !!error.request
+    });
+    
     // Handle different types of errors
     if (error.response) {
       // Server responded with error status
+      console.error('Server error response:', error.response.data);
       const errorData = error.response.data?.error;
       throw parseErrorResponse(errorData);
     } else if (error.request) {
       // Request was made but no response received
+      console.error('No response received from server');
       throw {
         type: 'network',
         message: '서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.',
@@ -65,6 +83,7 @@ export const analyzeWebsite = async (url, options = {}) => {
       };
     } else if (error.code === 'ECONNABORTED') {
       // Request timeout
+      console.error('Request timeout');
       throw {
         type: 'timeout',
         message: '요청 시간이 초과되었습니다. 서버가 응답하지 않습니다.',
@@ -72,6 +91,7 @@ export const analyzeWebsite = async (url, options = {}) => {
       };
     } else {
       // Something else happened
+      console.error('Unknown error occurred');
       throw {
         type: 'unknown',
         message: error.message || '예상치 못한 오류가 발생했습니다.',
