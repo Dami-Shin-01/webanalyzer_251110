@@ -61,6 +61,7 @@ class DynamicAnalyzer {
       
       const browser = await puppeteer.launch({
         headless: 'new', // 새로운 헤드리스 모드 사용
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -399,6 +400,7 @@ class DynamicAnalyzer {
     try {
       const browser = await puppeteer.launch({
         headless: 'new',
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
       });
       await browser.close();
