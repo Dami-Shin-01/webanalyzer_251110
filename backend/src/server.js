@@ -39,10 +39,27 @@ const analysisLimiter = rateLimit({
 });
 
 // CORS configuration - environment variable based (Requirement 9.4)
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'https://webanalyzer-251110.vercel.app',
+  // Allow any Vercel preview deployments
+].filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is in allowed list or is a Vercel deployment
+    if (allowedOrigins.includes(origin) || origin.includes('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   maxAge: 86400, // 24 hours
   credentials: false
 };
