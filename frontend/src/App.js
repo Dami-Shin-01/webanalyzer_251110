@@ -63,9 +63,12 @@ function App() {
     try {
       // Step 1: Fetching HTML
       setProgressStep('fetching');
-      setProgressDetails(`${url}에서 HTML을 다운로드하고 있습니다...`);
+      setProgressDetails('서버에 연결 중... (첫 요청 시 30초~1분 소요될 수 있습니다)');
       
       // Simulate step progression for better UX (visual feedback)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setProgressDetails(`${url}에서 HTML을 다운로드하고 있습니다...`);
       await new Promise(resolve => setTimeout(resolve, 500));
       
       // Step 2: Parsing CSS

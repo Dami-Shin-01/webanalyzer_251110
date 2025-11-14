@@ -48,7 +48,7 @@ export const analyzeWebsite = async (url, options = {}) => {
         }
       },
       {
-        timeout: options.timeout || 35000, // Slightly longer than backend timeout
+        timeout: options.timeout || 90000, // 90 seconds to account for Render cold start
         headers: {
           'Content-Type': 'application/json'
         }
