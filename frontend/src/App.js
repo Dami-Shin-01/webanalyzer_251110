@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import URLInput from './components/URLInput';
 import ProgressIndicator from './components/ProgressIndicator';
@@ -6,6 +6,9 @@ import DesignStudio from './components/DesignStudio';
 import ErrorDisplay from './components/ErrorDisplay';
 import WarningDisplay from './components/WarningDisplay';
 import { analyzeWebsite } from './services/api';
+
+// Debug: Log API URL on app load
+console.log('🔧 API URL:', process.env.REACT_APP_API_URL || 'http://localhost:5000');
 
 /**
  * App Component - Main application container
