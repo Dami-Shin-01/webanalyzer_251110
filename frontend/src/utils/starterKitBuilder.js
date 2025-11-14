@@ -391,7 +391,7 @@ function parseEffectKey(key) {
  * @param {string} value - Token value
  * @returns {string} Generated name
  */
-function generateAutoName(category, value) {
+export function generateAutoName(category, value) {
   switch (category) {
     case 'color':
       return generateColorName(value);

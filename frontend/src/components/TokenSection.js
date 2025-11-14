@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './TokenSection.css';
+import { generateAutoName } from '../utils/starterKitBuilder';
 
-function TokenSection({ title, icon, tokens, mappings, onMap, renderToken, getTokenKey }) {
+function TokenSection({ title, icon, category, tokens, mappings, onMap, renderToken, getTokenKey }) {
   const [previewToken, setPreviewToken] = useState(null);
   const inputRefs = useRef([]);
 
@@ -76,7 +77,7 @@ function TokenSection({ title, icon, tokens, mappings, onMap, renderToken, getTo
                     value={mappedName}
                     onChange={(e) => handleInputChange(tokenKey, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
-                    placeholder="토큰 이름 입력 (예: primary-color)"
+                    placeholder={category ? `자동: ${generateAutoName(category, tokenKey)}` : "토큰 이름 입력"}
                     className="token-name-input"
                     aria-label={`${title} 토큰 이름`}
                     aria-describedby={mappedName ? `preview-${tokenKey}-${index}` : undefined}

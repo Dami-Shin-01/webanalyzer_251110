@@ -117,6 +117,7 @@ function DesignStudio({ tokens, metadata, motionReports = [], onClose }) {
           <TokenSection
             title="색상 토큰"
             icon="🎨"
+            category="color"
             tokens={tokens.colors}
             mappings={tokenMappings.colors}
             onMap={(value, name) => handleTokenMap('colors', value, name)}
@@ -129,6 +130,7 @@ function DesignStudio({ tokens, metadata, motionReports = [], onClose }) {
           <TokenSection
             title="타이포그래피 토큰"
             icon="📝"
+            category="font"
             tokens={tokens.fonts}
             mappings={tokenMappings.fonts}
             onMap={(value, name) => handleTokenMap('fonts', value, name)}
@@ -141,6 +143,7 @@ function DesignStudio({ tokens, metadata, motionReports = [], onClose }) {
           <TokenSection
             title="간격 토큰"
             icon="📏"
+            category="spacing"
             tokens={tokens.spacing}
             mappings={tokenMappings.spacing}
             onMap={(value, name) => handleTokenMap('spacing', value, name)}
@@ -157,6 +160,7 @@ function DesignStudio({ tokens, metadata, motionReports = [], onClose }) {
           <TokenSection
             title="효과 토큰"
             icon="✨"
+            category="effect"
             tokens={tokens.effects}
             mappings={tokenMappings.effects}
             onMap={(value, name) => handleTokenMap('effects', value, name)}
