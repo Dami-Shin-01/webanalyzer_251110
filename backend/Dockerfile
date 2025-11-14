@@ -1,5 +1,5 @@
-# Use Node.js LTS version
-FROM node:18-slim
+# Use Node.js 20 LTS version
+FROM node:20-slim
 
 # Install dependencies for Puppeteer
 RUN apt-get update && apt-get install -y \
