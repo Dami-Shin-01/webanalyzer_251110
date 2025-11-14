@@ -5,8 +5,18 @@
 class CSSParser {
   constructor() {
     // Regex patterns for color extraction
-    this.hexPattern = /#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})\b/g;
+    this.hexPattern = /#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})\b/g;
     this.rgbPattern = /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/g;
+    this.hslPattern = /hsla?\s*\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%(?:\s*,\s*([\d.]+))?\s*\)/g;
+    
+    // Named colors mapping
+    this.namedColors = {
+      'black': '#000000', 'white': '#FFFFFF', 'red': '#FF0000', 'green': '#008000',
+      'blue': '#0000FF', 'yellow': '#FFFF00', 'cyan': '#00FFFF', 'magenta': '#FF00FF',
+      'gray': '#808080', 'grey': '#808080', 'silver': '#C0C0C0', 'maroon': '#800000',
+      'olive': '#808000', 'lime': '#00FF00', 'aqua': '#00FFFF', 'teal': '#008080',
+      'navy': '#000080', 'fuchsia': '#FF00FF', 'purple': '#800080', 'orange': '#FFA500'
+    };
   }
 
   /**
@@ -33,6 +43,24 @@ class CSSParser {
     for (const match of rgbMatches) {
       const normalized = this.normalizeRgbColor(match[0]);
       colors.add(normalized);
+    }
+
+    // Extract HSL(A) colors
+    const hslMatches = css.matchAll(this.hslPattern);
+    for (const match of hslMatches) {
+      const normalized = this.normalizeHslColor(match[0]);
+      colors.add(normalized);
+    }
+
+    // Extract named colors
+    const namedColorPattern = new RegExp(`\\b(${Object.keys(this.namedColors).join('|')})\\b`, 'gi');
+    const namedMatches = css.matchAll(namedColorPattern);
+    for (const match of namedMatches) {
+      const colorName = match[0].toLowerCase();
+      const hexValue = this.namedColors[colorName];
+      if (hexValue) {
+        colors.add(hexValue);
+      }
     }
 
     return Array.from(colors).sort();
@@ -83,6 +111,52 @@ class CSSParser {
     const alphaStr = a === 1 ? '1' : a.toString();
     
     return `rgba(${r}, ${g}, ${b}, ${alphaStr})`;
+  }
+
+  /**
+   * Normalize HSL(A) color values and convert to HEX
+   * @param {string} hsl - HSL(A) color value
+   * @returns {string} Normalized HEX color
+   */
+  normalizeHslColor(hsl) {
+    const match = hsl.match(/hsla?\s*\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%(?:\s*,\s*([\d.]+))?\s*\)/);
+    
+    if (!match) {
+      return hsl;
+    }
+
+    const h = parseFloat(match[1]) / 360;
+    const s = parseFloat(match[2]) / 100;
+    const l = parseFloat(match[3]) / 100;
+
+    // Convert HSL to RGB
+    let r, g, b;
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+
+    // Convert to HEX
+    const toHex = (x) => {
+      const hex = Math.round(x * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
   }
 
   /**
